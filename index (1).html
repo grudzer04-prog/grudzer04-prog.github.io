@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evan Grudzinski — Engineering Portfolio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral: #D85A30;
+      --coral-light: #FAECE7;
+      --coral-mid: #F0997B;
+      --coral-dark: #993C1D;
+      --coral-deeper: #4A1B0C;
+      --text: #2d2d2d;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.12);
+      --bg: #ffffff;
+      --bg-secondary: #f7f6f3;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 0.5px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    .nav-logo { font-size: 18px; font-weight: 600; }
+    .nav-logo span { color: var(--coral); }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { font-size: 14px; color: var(--text-muted); transition: color 0.15s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2rem 3.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--coral-light);
+      color: var(--coral-dark);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.03em;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 span { color: var(--coral); }
+    .hero p {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--coral);
+      color: white;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--coral-dark); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 0.5px solid var(--border);
+      padding: 11px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-secondary:hover { background: var(--bg-secondary); }
+
+    /* SKILLS BAR */
+    .skills-bar {
+      background: var(--bg-secondary);
+      border-top: 0.5px solid var(--border);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0.9rem 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      overflow: hidden;
+    }
+    .skills-bar span { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+    .skills-bar .dot { color: var(--coral); }
+
+    /* SECTION */
+    .section {
+      padding: 4rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px;
+      color: var(--coral);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .project-card:hover {
+      border-color: var(--coral);
+      transform: translateY(-2px);
+    }
+    .project-thumb {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+    .project-body { padding: 1.1rem; }
+    .project-tag {
+      font-size: 11px;
+      color: var(--coral-dark);
+      background: var(--coral-light);
+      padding: 3px 9px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .project-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .project-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* EXPERIENCE */
+    .experience-list { display: flex; flex-direction: column; gap: 14px; }
+    .exp-card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .exp-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .exp-body { flex: 1; }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+    .exp-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+    .exp-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+    .exp-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .exp-badge {
+      font-size: 11px;
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
+    .about-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .about-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 0.75rem; }
+    .about-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .about-card li { font-size: 14px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+    .about-card li::before { content: ""; width: 6px; height: 6px; background: var(--coral); border-radius: 50%; flex-shrink: 0; }
+
+    /* CONTACT */
+    .contact-box {
+      background: var(--coral-light);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .contact-box h2 { font-size: 26px; font-weight: 600; color: var(--coral-deeper); margin-bottom: 0.5rem; }
+    .contact-box p { font-size: 16px; color: var(--coral-dark); margin-bottom: 1.75rem; }
+    .contact-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .contact-link {
+      background: white;
+      color: var(--coral);
+      border: 0.5px solid var(--coral-mid);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .contact-link:hover { background: var(--coral-light); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-top: 0.5px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .nav-links { gap: 1rem; }
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .section { padding: 2.5rem 1.25rem; }
+      .skills-bar { padding: 0.75rem 1.25rem; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">Evan <span>Grudzinski</span></div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Engineering Design & Technology · WMU</div>
+    <h1>Building things that<br><span>work in the real world</span></h1>
+    <p>Western Michigan University student specializing in fabrication, CAD design, and hands-on manufacturing. I bring ideas from concept to creation — in the lab and on the job site.</p>
+    <div class="hero-btns">
+      <a href="#projects"><button class="btn-primary">View Projects</button></a>
+      <a href="Evan_Grudzinski_Resume.pdf" target="_blank"><button class="btn-secondary">Download Resume</button></a>
+    </div>
+  </div>
+
+  <div class="skills-bar">
+    <span>AutoCAD</span><span class="dot">·</span>
+    <span>NX</span><span class="dot">·</span>
+    <span>CATIA V5</span><span class="dot">·</span>
+    <span>Welding & Fabrication</span><span class="dot">·</span>
+    <span>Engine Lathe & Vertical Mill</span><span class="dot">·</span>
+    <span>Arduino</span><span class="dot">·</span>
+    <span>Injection Molding</span><span class="dot">·</span>
+    <span>Rotational Molding</span>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section" id="projects">
+    <div class="section-label">Work</div>
+    <div class="section-title">Featured Projects</div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:#E6F1FB;">🌡️</div>
+        <div class="project-body">
+          <span class="project-tag">Embedded Systems</span>
+          <div class="project-title">Arduino Temp & Humidity Monitor</div>
+          <div class="project-desc">Designed and programmed a real-time environmental monitoring system using Arduino Uno with sensor integration and live data display.</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:#EAF3DE;">⚙️</div>
+        <div class="project-body">
+          <span class="project-tag">Machining</span>
+          <div class="project-title">Machined Steel & Aluminum Paper Punch</div>
+          <div class="project-desc">Manufactured a fully functional paper punch on an engine lathe and vertical mill. Tolerances held within ±0.005 in using steel and aluminum stock.</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:#EEEDFE;">📐</div>
+        <div class="project-body">
+          <span class="project-tag">CAD Design</span>
+          <div class="project-title">CAD Speaker Enclosure</div>
+          <div class="project-desc">Custom speaker enclosure modeled in NX / CATIA V5, balancing functional performance with aesthetic design using 3D parametric modeling.</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:#FAEEDA;">🔵</div>
+        <div class="project-body">
+          <span class="project-tag">Manufacturing</span>
+          <div class="project-title">Rotational Molding — Hollow Baseball</div>
+          <div class="project-desc">Produced a hollow plastic baseball via rotational molding, gaining hands-on experience with thermoplastic processing and heating/cooling cycles.</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:#FAECE7;">🥏</div>
+        <div class="project-body">
+          <span class="project-tag">Manufacturing</span>
+          <div class="project-title">Injection Molded Frisbees</div>
+          <div class="project-desc">Manufactured frisbees on a Roboshot 165-ton injection molding machine, learning machine setup, material flow, and how processing parameters affect part quality.</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:#E1F5EE;">🌲</div>
+        <div class="project-body">
+          <span class="project-tag">Construction</span>
+          <div class="project-title">Treehouse + Pulley System</div>
+          <div class="project-desc">Designed and built a full treehouse structure with a functional pulley system, applying structural load considerations, construction techniques, and safety practices.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- EXPERIENCE -->
+  <div class="section" id="experience">
+    <div class="section-label">Background</div>
+    <div class="section-title">Work Experience</div>
+    <div class="experience-list">
+
+      <div class="exp-card">
+        <div class="exp-icon" style="background:#FAECE7;">🚗</div>
+        <div class="exp-body">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Self-Employed Car Detailer</div>
+              <div class="exp-meta">Chelsea, MI · 2019 – Present</div>
+            </div>
+            <span class="exp-badge">6+ years</span>
+          </div>
+          <div class="exp-desc">Founded and scaled a detailing business from the ground up with a loyal base of repeat customers. Managed all scheduling, invoicing, and client communication while balancing full-time studies.</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-icon" style="background:#E6F1FB;">🏎️</div>
+        <div class="exp-body">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Porter — LaFontaine Automotive Group</div>
+              <div class="exp-meta">Dexter, MI · Summer 2025</div>
+            </div>
+          </div>
+          <div class="exp-desc">Maintained dealership lot organization and safely transported vehicles between locations. Supported staff with daily operations and ensured vehicles were customer-ready.</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-icon" style="background:#EAF3DE;">🏗️</div>
+        <div class="exp-body">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Construction Worker — Chelsea Landholdings LLC</div>
+              <div class="exp-meta">Chelsea, MI · Summer 2025</div>
+            </div>
+          </div>
+          <div class="exp-desc">Contributed to residential and commercial projects with emphasis on precision and safety. Poured and finished concrete, performed welding, and completed structural work.</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-icon" style="background:#EEEDFE;">🏆</div>
+        <div class="exp-body">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Porter — Germain Automotive (VW / Porsche / Audi)</div>
+              <div class="exp-meta">Ann Arbor, MI · Summer 2024</div>
+            </div>
+          </div>
+          <div class="exp-desc">Handled vehicles valued up to $200,000, conducted test drives to verify readiness, and provided professional customer transportation at a premier multi-brand dealership.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <div class="section-label">More</div>
+    <div class="section-title">About Me</div>
+    <div class="about-grid">
+      <div class="about-card">
+        <h3>Technical Skills</h3>
+        <ul>
+          <li>AutoCAD, NX, CATIA V5</li>
+          <li>Welding and fabrication</li>
+          <li>Concrete work and finishing</li>
+          <li>Engine lathe and vertical mill</li>
+          <li>Precision measurement & QC</li>
+          <li>Arduino / embedded systems</li>
+        </ul>
+      </div>
+      <div class="about-card">
+        <h3>Achievements</h3>
+        <ul>
+          <li>WMU Lee Honors College member</li>
+          <li>MI High School Tennis State Championships – 3rd Seed</li>
+          <li>U of M Pit Orchestra performer</li>
+          <li>State Solo & Ensemble "1" ratings</li>
+          <li>Selected to perform a featured concerto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CONTACT -->
+  <div class="section" id="contact">
+    <div class="contact-box">
+      <h2>Let's connect</h2>
+      <p>Open to internships, co-ops, and project collaborations.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="/cdn-cgi/l/email-protection#35524740514f50470501755258545c591b565a58"><span class="__cf_email__" data-cfemail="74130601100e11064440341319151d185a171b19">[email&#160;protected]</span></a>
+        <a class="contact-link" href="tel:7349251994">(734) 925-1994</a>
+        <a class="contact-link" href="https://www.linkedin.com/in/evan-grudzinski-9745a23b9/" target="_blank">LinkedIn ↗</a>
+        <a class="contact-link" href="Evan_Grudzinski_Resume.pdf" target="_blank">Resume PDF ↗</a>
+        
